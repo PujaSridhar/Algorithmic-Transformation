@@ -1,0 +1,54 @@
+<head>
+  <style> body { margin: 0; font-family: Arial, sans-serif;
+    } </style>
+
+  <script src="//unpkg.com/3d-force-graph"></script>
+  <!--<script src="../../dist/3d-force-graph.js"></script>-->
+</head>
+
+
+<body>
+  <div id="3d-graph"></div>
+  <div id="text-label" style="position: absolute; top: 10px; left: 10px; color: greenyellow;">Red lines indicates edges between two clique nodes</div>
+  <div id="text-label" style="position: absolute; top: 30px; left: 10px; color: blueviolet;">Light blue nodes indicated independent nodes or clique nodes</div>
+  <script type="importmap">{ "imports": { "three": "//unpkg.com/three/build/three.module.js" }}</script>
+  <script type="module">
+    import SpriteText from "//unpkg.com/three-spritetext/dist/three-spritetext.mjs";
+    
+
+
+    const Graph = ForceGraph3D()
+      (document.getElementById('3d-graph'))
+        .jsonUrl('edges1.json')
+        .backgroundColor('white')
+        .nodeAutoColorBy(node => {
+            console.log(node);
+            if (node.group === 1 || node.group === 4) {
+              return 'blue';
+            } else {
+              return 'red'; // or any other default color
+            }
+          })
+        .nodeThreeObject(node => {
+          const sprite = new SpriteText(node.id);
+          sprite.material.depthWrite = false; // make sprite background transparent
+          
+          sprite.color = node.color;
+          sprite.textHeight = 15;
+          return sprite;
+        })
+        
+        .linkWidth(1) // Set the default width for all edges
+        .linkColor(link => {if (link.value===3){
+          return 'red';}
+          else if (link.value===4){
+            return 'white';}
+            else{return 'peach';}});
+        
+    
+    // Spread nodes a little wider
+    Graph.d3Force('charge').strength(-120);
+    
+  </script>
+  
+</body>
