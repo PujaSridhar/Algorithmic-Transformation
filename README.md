@@ -7,6 +7,7 @@ This Python script is designed to transform Independent sets to Clique sets. It 
 - Pandas library
 - Installation
 
+## Instructions
 - Copy code
 - pip install networkx pandas
 - Usage
